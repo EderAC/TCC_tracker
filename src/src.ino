@@ -324,6 +324,9 @@ void turnMotor(unsigned long motorStep, volatile byte dir ) {
   valueRightBot = analogRead(sensorRightBot);
   valueRightTop = analogRead(sensorRightTop);
 
+  Serial.print("Umidade: ");
+  Serial.print(humidity, 2);
+
   adjustDirection = calcLDRDifference();
 
   if(adjustDirection == 1) {
@@ -335,16 +338,25 @@ void turnMotor(unsigned long motorStep, volatile byte dir ) {
 }
 
 int calcLDRDifference() {
+  Serial.print("esquerda baixo: ");
+  Serial.println(valueLeftBot);
+  Serial.print("esquerda cima: ");
+  Serial.println(valueLeftTop);
+  Serial.print("direita baixo: ");
+  Serial.println(valueRightBot);
+  Serial.print("direita cima: ");
+  Serial.println(valueRightTop);
+
   int averageRight = valueRightBot + valueRightTop;
   int averageLeft = valueLeftBot + valueLeftTop;
   
 
   int difference = averageRight - averageLeft;
 
-  if(difference >= 100) {
+  if(difference >= 50) {
     return 1;
   }
-  else if(difference <= -100) {
+  else if(difference <= -50) {
     return 2;
   }
   
